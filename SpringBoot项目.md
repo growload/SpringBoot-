@@ -38,13 +38,27 @@
 
 ![搜索引擎架构图](G:\学习\Java\Java笔记\leveltwo\SpringBoot项目课\images\搜索引擎架构图.png)
 
+存储数据的处理方式：
+
+如：	一篇文章-》 语义分析 -》 关键字提取 -》根据关键字及出现次数等---》 倒排存储
+
+关键字搜索：
+
+【查询分析】 关键字相关的近义词、反义词、关联信息（IP、地址、用户信息）
+
+
+
 爬虫分类：
 
 通用型爬虫、垂直型爬虫（对特定内容的采集）
 
 ![通用爬虫框架图](G:\学习\Java\Java笔记\leveltwo\SpringBoot项目课\images\通用爬虫框架图.png)
 
-爬虫数据的分析
+网站的首页作为种子、爬虫去采集能够分解出多少不重复的子连接，及其数据。
+
+采集/下载页面  -》 分解为数据本身（存储）、新的链接（依次向下爬取，类似树的深度遍历）-》 直到没有新链接代表采集完成（链接使用队列来存储）
+
+（三）爬虫数据的分析
 
 1.浏览器开发者工具
 
@@ -90,6 +104,14 @@ https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5
 ![1588946083725](G:\学习\Java\Java笔记\leveltwo\SpringBoot项目课\images\postman.png)
 
 
+
+3、爬虫破解问题
+
+拿到数据是核心的一步。
+
+公开数据只要是非恶意就允许采集，非恶意是指模仿人的行为采集的行为，不会高并发或者恶意攻击。
+
+隐私数据都是由强大的加密处理的，防爬虫的手段是安全领域内的一大问题。
 
 ## Day2
 
@@ -206,5 +228,97 @@ public class DataHandler {
 
 
 
+## Day3
+
 #### （三） 将数据展示在页面中
+
+1.编写service和controller
+
+```java
+public interface DataService {
+
+    List<DataBean> list();
+}
+@Service
+public class DataServiceImpl implements DataService {
+
+    @Override
+    public List<DataBean> list() {
+        List<DataBean> result = null;
+        try {
+            result = DataHandler.getData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+}
+@Controller
+public class DataController {
+
+    @Autowired
+    DataService dataService;
+
+    @GetMapping("/")
+    public String list(Model model){
+        List<DataBean> list = dataService.list();
+        model.addAttribute("dataList", list);
+        return "list";
+    }
+
+}
+
+```
+
+2.编写静态页面
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title>Title</title>
+</head>
+<body>
+    <h2>国内疫情情况如下</h2>
+
+    <br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>地区</th>
+                <th>现有确诊</th>
+                <th>累计确诊</th>
+                <th>治愈</th>
+                <th>死亡</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="data:${dataList}">
+            <td th:text="${data.area}">name</td>
+            <td th:text="${data.nowConfirm}">nowConfirm</td>
+            <td th:text="${data.confirm}">confirm</td>
+            <td th:text="${data.heal}">heal</td>
+            <td th:text="${data.dead}">dead</td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html
+```
+
+#### (四) 转为实时数据
+
+涉及知识点：用java代码模拟http请求
+
+1、复习get和post请求
+
+​	分别在使用场景、参数传递方式、数据大小限制、安全性等方面的异同。
+
+2、HttpURLConnection
+
+#### (五) 使用Jsoup解析html格式数据
+
+#### (六)  增加数据存储逻辑
 
