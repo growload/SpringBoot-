@@ -2,8 +2,13 @@ package com.zdefys.handler;
 
 import com.google.gson.Gson;
 import com.zdefys.bean.DataBean;
+import com.zdefys.service.DataService;
 import com.zdefys.util.HttpURLConnectionUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +20,30 @@ import java.util.Map;
  * @version: v1.0
  * @descrption:
  */
+@Component
 public class DataHandler {
+
+    @Autowired
+    private DataService dataService;
     public static String urlStr = "https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5";
+
+    @PostConstruct
+    public void saveData(){
+        try {
+            List<DataBean> dataBeans = getData();
+            // 先将数据清空
+//            dataService.remove(null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    // 配置定时执行的注解 支持cron表达式
+    @Scheduled(cron = "0 0/1 * * * ? *")
+    public void updateData(){
+        System.out.println("更新数据");
+        saveData();
+    }
 
     public static List<DataBean> getData() throws Exception {
         // 实时数据

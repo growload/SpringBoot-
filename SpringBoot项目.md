@@ -332,7 +332,129 @@ public class DataController {
 
 2、HttpURLConnection
 
+```
+// 连接时间和读取时间
+// 连接时间：发送请求端 连接到 url目标地址端的时间。
+//          受到距离长短和网络速度的影响
+// 读取时间：指连接成功后  获取数据的时间
+//          受到数据量和服务器处理速度的影响
+```
+
+​	1） 通过创建url打开远程连接（HttpURLConnection）
+
+​	2）
+
+```java
+public class HttpURLConnectionUtil {
+
+        public static String doGet(String urlStr) {
+            HttpURLConnection conn = null;
+            InputStream is = null;
+            BufferedReader br = null;
+            StringBuilder result = new StringBuilder();
+            try {
+                URL url = new URL(urlStr);
+                // 通过url打开一个远程连接 强转类型
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+
+                // 连接时间和读取时间
+                // 连接时间：发送请求端 连接到 url目标地址端的时间。
+                //          受到距离长短和网络速度的影响
+                // 读取时间：指连接成功后  获取数据的时间
+                //          受到数据量和服务器处理速度的影响
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(60000);
+                // 设定请求头参数的方式：如指定接收json数据  服务端的key值为content-type
+                conn.setRequestProperty("Accept", "application/json");
+
+                // 发送请求
+                conn.connect();
+                if (conn.getResponseCode() != 200) {
+                    // TODO 此处应该增加异常处理
+                    return "";
+                }
+                is = conn.getInputStream();
+                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                String line;
+                // 逐行读取 不为空就继续
+                while ((line = br.readLine()) != null) {
+                    result.append(line);
+                    System.out.println(line);
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (br != null) {
+                        br.close();
+                    }
+                    if (is != null) {
+                        is.close();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return result.toString();
+        }
+```
+
+## Day 4
+
 #### (五) 使用Jsoup解析html格式数据
 
+1、Jsoup
+
+​	是html的解析器，可以解析html文本和直接解析URL地址。
+
+引入依赖
+
+```
+<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+<dependency>
+    <groupId>org.jsoup</groupId>
+    <artifactId>jsoup</artifactId>
+    <version>1.13.1</version>
+</dependency>
+
+```
+
+
+
 #### (六)  增加数据存储逻辑
+
+
+
+2、配置数据库
+
+3、使用mybatis-plus进行增删改查的操作
+
+4、初始化数据存储的逻辑
+
+@PostConstruct
+
+修饰的方法，在服务器加载Servlet时运行，而且只执行一次
+
+@Scheduled
+
+1） fixedRate = 10000 指定频率的执行任务 从方法执行开始就计时。
+
+​	假设方法执行5s  那么第一次执行开始过了10s后，开始第二次执行
+
+2） fixedDelay = 10000 指定间隔的执行任务  从方法执行完成开始计时
+
+​	假设方法执行5s  那么第一次执行完成过了10s后，开始第二次执行
+
+3）cron表达式
+
+​	<https://cron.qqe2.com/>
+
+​	把6个位置用空格分隔，指代不同单位的时间，执行的规律
+
+​	秒、分钟、小时、日期、月份、星期、（年，可选）
 
