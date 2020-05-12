@@ -68,9 +68,7 @@
 
 <https://news.qq.com/zt2020/page/feiyan.htm#/?nojump=1>
 
-2）丁香医生出品
 
-<https://ncov.dxy.cn/ncovh5/view/pneumonia>
 
 工具的打开方式：F12/ctrl+shift+I/更多工具-开发者工具 / 右键-检查
 
@@ -91,7 +89,23 @@
 
 https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5
 
-返回数据的格式json
+返回数据的格式：json
+
+2）丁香医生出品
+
+<https://ncov.dxy.cn/ncovh5/view/pneumonia?from=timeline>
+
+分析的方式如上：
+
+分析后的请求地址：
+
+https://ncov.dxy.cn/ncovh5/view/pneumonia?from=timeline
+
+返回的数据格式是html
+
+
+
+
 
 
 

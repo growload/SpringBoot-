@@ -73,4 +73,10 @@ public class HttpURLConnectionUtil {
 
         return result.toString();
     }
+
+    public static void main(String[] args) {
+        String str = "https://ncov.dxy.cn/ncovh5/view/pneumonia?from=timeline";
+        String s = doGet(str);
+        System.out.println(s);
+    }
 }

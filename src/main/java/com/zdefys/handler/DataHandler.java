@@ -23,6 +23,7 @@ public class DataHandler {
         String respJson = HttpURLConnectionUtil.doGet(urlStr);
         Gson gson = new Gson();
         Map map = gson.fromJson(respJson, Map.class);
+        // 此时增加了一层处理，data对应的数据类型为String
         String subStr = (String) map.get("data");
         Map subMap = gson.fromJson(subStr, Map.class);
 
