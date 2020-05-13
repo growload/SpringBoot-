@@ -10,6 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @version: v1.0
  * @description:
  */
-@Mapper
 public interface DataMapper extends BaseMapper<DataBean> {
 }

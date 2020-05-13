@@ -409,7 +409,7 @@ public class HttpURLConnectionUtil {
         }
 ```
 
-## Day 4
+## Day4
 
 #### (五) 使用Jsoup解析html格式数据
 
@@ -555,13 +555,109 @@ spring.datasource.password=zdefys
 
 **3、使用mybatis-plus进行增删改查的操作**
 
+1）创建mapper
+
+```java
+public interface DataMapper extends BaseMapper<DataBean> {
+}
+```
+
+2）扫描mapper的注解
+
+```java
+@MapperScan("com.zdefys.mapper")
+```
+
+3）创建service及其实现类
+
+泛型是要处理的实体类
+
+```java
+public interface DataService extends IService<DataBean> {}
+```
+
+```java
+@Service
+public class DataServiceImpl extends ServiceImpl<DataMapper,DataBean> implements DataService {}
+```
+
+4）改造实体类Databean
+
+此时要满足，存在无参构造器，以及可被序列化
+
+同时指定具体映射的表名，通过@TableName
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@TableName("illness")
+public class DataBean implements Serializable {
+
+    /**
+     * 区域名字
+     */
+    private String area;
+
+    /**
+     * 现有确诊
+     */
+    private int nowConfirm;
+
+    /**
+     * 累计确诊
+     */
+    private int confirm;
+
+    /**
+     * 治愈
+     */
+    private int heal;
+
+    /**
+     * 死亡
+     */
+    private int dead;
+}
+```
+
+
+
 **4、初始化数据存储的逻辑**
 
 @PostConstruct
 
 修饰的方法，在服务器加载Servlet时运行，而且只执行一次
 
+改造逻辑，首先将DataHandler声明为组件@Component
+
+```
+@Autowired
+private DataService dataService;
+@PostConstruct
+public void saveData(){
+    try {
+        List<DataBean> dataBeans = getData();
+        // 先将数据清空
+        dataService.remove(null);
+        dataService.saveBatch(dataBeans);
+    }catch (Exception e){
+        e.printStackTrace();
+    }
+}
+```
+
 @Scheduled
+
+使用前需要在主程序入口类上打开开关
+
+```java
+@EnableScheduling
+```
+
+
+
+
 
 1） fixedRate = 10000 指定频率的执行任务 从方法执行开始就计时。
 
@@ -571,7 +667,7 @@ spring.datasource.password=zdefys
 
 ​	假设方法执行5s  那么第一次执行完成过了10s后，开始第二次执行
 
-3）cron表达式
+3）cron表达式—计划执行的表达式
 
 ​	<https://cron.qqe2.com/>
 
@@ -579,3 +675,50 @@ spring.datasource.password=zdefys
 
 ​	秒、分钟、小时、日期、月份、星期、（年，可选）
 
+```java
+// 配置定时执行的注解 支持cron表达式
+// 每分钟执行一次
+@Scheduled(cron = "0 0/1 * * * ?")
+public void updateData(){
+    System.out.println("更新数据");
+    saveData();
+}
+```
+
+## Day5
+
+### 【展示数据】
+
+（一）Echarts 
+
+  <https://echarts.apache.org/examples/zh/index.html>
+
+是由百度前端技术部开发，基于js的数据可视化图表库
+
+分析图形展示的数据来源，然后请求数据转换成我们需要的格式，传递给页面，通过Echarts渲染出来
+
+1）分析的请求地址
+
+https://view.inews.qq.com/g2/getOnsInfo?name=disease_other
+
+可以获得json格式的数据，数据的key是chinaDayList
+
+2）模拟请求
+
+HttpClient使用
+
+引入maven依赖
+
+```
+<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+<dependency>
+    <groupId>org.apache.httpcomponents</groupId>
+    <artifactId>httpclient</artifactId>
+    <version>4.5.12</version>
+</dependency>
+
+```
+
+3）解析出数据
+
+4）返回给页面渲染
