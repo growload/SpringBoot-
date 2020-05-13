@@ -1,8 +1,11 @@
 package com.zdefys.bean;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * @author: zhangdeen
@@ -13,7 +16,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DataBean {
+@TableName("illness")
+public class DataBean implements Serializable {
 
     /**
      * 区域名字

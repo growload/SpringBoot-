@@ -32,14 +32,15 @@ public class DataHandler {
         try {
             List<DataBean> dataBeans = getData();
             // 先将数据清空
-//            dataService.remove(null);
+            dataService.remove(null);
+            dataService.saveBatch(dataBeans);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
     // 配置定时执行的注解 支持cron表达式
-    @Scheduled(cron = "0 0/1 * * * ? *")
+    @Scheduled(cron = "0 0/1 * * * ?")
     public void updateData(){
         System.out.println("更新数据");
         saveData();

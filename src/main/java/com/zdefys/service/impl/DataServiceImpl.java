@@ -1,11 +1,10 @@
 package com.zdefys.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zdefys.bean.DataBean;
-import com.zdefys.handler.DataHandler;
+import com.zdefys.mapper.DataMapper;
 import com.zdefys.service.DataService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author: zdefys
@@ -14,9 +13,17 @@ import java.util.List;
  * @description:
  */
 @Service
-public class DataServiceImpl implements DataService {
+public class DataServiceImpl extends ServiceImpl<DataMapper,DataBean> implements DataService {
 
-    @Override
+
+
+
+
+
+
+
+
+   /* @Override
     public List<DataBean> list() {
         List<DataBean> result = null;
         try {
@@ -26,4 +33,12 @@ public class DataServiceImpl implements DataService {
         }
         return result;
     }
+
+    @Override
+    public List<DataBean> listById(int id) {
+        if (id==2) {
+            return JsoupHandler.getData();
+        }
+        return list();
+    }*/
 }

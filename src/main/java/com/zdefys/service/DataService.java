@@ -1,5 +1,6 @@
 package com.zdefys.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.zdefys.bean.DataBean;
 
 import java.util.List;
@@ -10,7 +11,9 @@ import java.util.List;
  * @version: v1.0
  * @description:
  */
-public interface DataService {
+public interface DataService extends IService<DataBean> {
 
-    List<DataBean> list();
+//    List<DataBean> list();
+////
+////    List<DataBean> listById(int id);
 }

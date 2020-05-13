@@ -342,7 +342,11 @@ public class DataController {
 
 ​	1） 通过创建url打开远程连接（HttpURLConnection）
 
-​	2）
+​	2） 设置相应参数（超时时间和请求头）
+
+​	3） 发送请求
+
+​	4） 接收结果（使用InputStream和BufferedReader）
 
 ```java
 public class HttpURLConnectionUtil {
@@ -424,17 +428,133 @@ public class HttpURLConnectionUtil {
 
 ```
 
+```java
+//        Document document = Jsoup.parse(htmlStr);
+        // 通过标签名找到元素
+//        Elements element = document.getElementsByTag("p");
+//        System.out.println(element);
+        // 通过id找到元素
+//        document.getElementById()
+        // 通过正则表达式找到元素
+//        Elements element = document.select("a[href]);
+
+```
+
+2、提供不同数据源的切换查询
+
+1）增加了 controller方法
+
+```java
+@GetMapping("/list/{id}")
+public String listById(Model model,@PathVariable String id){
+    List<DataBean> list = dataService.listById(Integer.parseInt(id));
+    model.addAttribute("dataList", list);
+    return "list";
+}
+```
+
+@PathVariavle 将接收到的地址数据，映射到方法的参数中
+
+2） 完善service
+
+```java
+@Override
+public List<DataBean> listById(int id) {
+    if (id==2) {
+        return JsoupHandler.getData();
+    }
+    return list();
+}
+```
+
+3）处理数据的方法
+
+```
+public class JsoupHandler {
+
+    // 丁香医生
+    public static String urlStr = "https://ncov.dxy.cn/ncovh5/view/pneumonia?from=timeline";
+
+    public ArrayList<DataBean>  getData() {
+        ArrayList<DataBean> result = new ArrayList<>(34);
+
+        try {
+            Document doc = Jsoup.connect(urlStr).get();
+//            Elements scripts = doc.select("script");
+            // 找到指定的标签数据
+            Element oneScript = doc.getElementById("getAreaStat");
+            String data = oneScript.data();
+            // 字符串截取出json格式的数据
+            String subData = data.substring(data.indexOf("["), data.lastIndexOf("]") + 1);
+            Gson gson = new Gson();
+
+            ArrayList list = gson.fromJson(subData, ArrayList.class);
+            for (int i = 0; i < list.size(); i++) {
+                Map map = (Map) list.get(i);
+                String name = (String) map.get("provinceName");
+                double nowConfirm = (double) map.get("currentConfirmedCount");
+                double confirm = (double) map.get("confirmedCount");
+                double heal = (double) map.get("curedCount");
+                double dead = (double) map.get("deadCount");
+
+                DataBean dataBean = new DataBean(name,(int)nowConfirm,(int)confirm,(int)heal,(int)dead);
+                result.add(dataBean);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+}
+```
+
+
+
+4）验证
+
+分别访问http://localhost:8080/list/1 和http://localhost:8080/list/2
+
+通过省份的名称来区分不同渠道的数据结果
+
 
 
 #### (六)  增加数据存储逻辑
 
+**1、引入相关的依赖**
+
+```xml
+<dependency>
+    <groupId>org.mybatis.spring.boot</groupId>
+    <artifactId>mybatis-spring-boot-starter</artifactId>
+    <version>2.1.2</version>
+</dependency>
+<dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>mybatis-plus-boot-starter</artifactId>
+    <version>3.2.0</version>
+</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.19</version>
+</dependency>
+```
+
+**2、配置数据库**
+
+```properties
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://118.190.27.19:3306/epidemic?serverTimezone=UTC&useUnicode=true&useSSL=false&characterEncoding=utf8
+spring.datasource.username=root
+spring.datasource.password=zdefys
+```
 
 
-2、配置数据库
 
-3、使用mybatis-plus进行增删改查的操作
+**3、使用mybatis-plus进行增删改查的操作**
 
-4、初始化数据存储的逻辑
+**4、初始化数据存储的逻辑**
 
 @PostConstruct
 
