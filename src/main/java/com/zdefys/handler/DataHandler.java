@@ -39,7 +39,7 @@ public class DataHandler {
     }
 
     // 配置定时执行的注解 支持cron表达式
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0 0 1-2 * ?")
     public void updateData(){
         System.out.println("更新数据");
         saveData();

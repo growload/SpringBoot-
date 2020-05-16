@@ -1,5 +1,11 @@
 # SpringBoot项目
-项目访问地址：http://118.190.27.19:8080/
+数据项目访问地址：http://118.190.27.19:8080/
+
+折线图访问地址：<http://118.190.27.19:8080/graph>
+
+多条折线图访问地址：<http://localhost:8080/graphAdd>
+
+柱状图访问地址：<http://localhost:8080/graphColumnar>
 
 ## Day1
 
@@ -689,13 +695,17 @@ public void updateData(){
 
 ### 【展示数据】
 
-（一）Echarts 
-
   <https://echarts.apache.org/examples/zh/index.html>
 
 是由百度前端技术部开发，基于js的数据可视化图表库
 
+![1589541213486](/images/折线图.png)
+
 分析图形展示的数据来源，然后请求数据转换成我们需要的格式，传递给页面，通过Echarts渲染出来
+
+#### （一）折线图
+
+![1589541213486](/images/折线图.png)
 
 1）分析的请求地址
 
@@ -705,7 +715,7 @@ https://view.inews.qq.com/g2/getOnsInfo?name=disease_other
 
 2）模拟请求
 
-HttpClient使用
+HttpClient使用，应用最广泛的处理http请求的工具
 
 引入maven依赖
 
@@ -719,6 +729,201 @@ HttpClient使用
 
 ```
 
+```java
+public class HttpClientUtil {
+
+    public static String doGet(String urlStr) {
+
+        // 提供了 闭合的HttpClient对象
+        CloseableHttpClient httpClient = null;
+        // 也提供了闭合的响应对象
+        CloseableHttpResponse response = null;
+
+        String result = null;
+        try {
+
+            // 使用默认创建方式
+            httpClient = HttpClients.createDefault();
+            // 创建一个get请求  传入url
+            HttpGet httpGet = new HttpGet(urlStr);
+            // 设置请求头的方式
+            httpGet.addHeader("Accept", "application/json");
+            // 设置请求参数   设定连接时间、数据读取时间（socketTimeOut）等  单位是毫秒
+            // ConnectionRequestTimeout 指从共享连接池中取出连接的超时时间
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setConnectTimeout(35000)
+                    .setConnectionRequestTimeout(35000)
+                    .setSocketTimeout(60000).build();
+            // 设置配置参数
+            httpGet.setConfig(requestConfig);
+            // 执行请求
+            response = httpClient.execute(httpGet);
+            // 从返回对象中获取返回对象
+            HttpEntity entity = response.getEntity();
+            result = EntityUtils.toString(entity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        String str = "https://view.inews.qq.com/g2/getOnsInfo?name=disease_other";
+        String result = doGet(str);
+        System.out.println(result);
+    }
+}
+
+```
+
+
+
 3）解析出数据
 
+```java
+public static String urlStr = "https://view.inews.qq.com/g2/getOnsInfo?name=disease_other";
+
+    /**
+     *  一条折线图
+     *
+     * @return
+     */
+    public static List<GraphBean> getGraphData() {
+
+        List<GraphBean> result = new ArrayList<>(121);
+
+        String str = HttpClientUtil.doGet(urlStr);
+        Gson gson = new Gson();
+        Map map = gson.fromJson(str, Map.class);
+        String subStr = (String) map.get("data");
+        Map subMap = gson.fromJson(subStr, Map.class);
+
+        ArrayList list = (ArrayList) subMap.get("chinaDayList");
+        for (int i = 0; i < list.size(); i++) {
+            Map tmp = (Map) list.get(i);
+            String date = (String) tmp.get("date");
+            double nowConfirm = (double) tmp.get("nowConfirm");
+            GraphBean graphBean = new GraphBean(date, (int) nowConfirm);
+            result.add(graphBean);
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        List<GraphBean> graphData = getGraphData();
+        System.out.println(graphData);
+    }
+```
+
+数据结构
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class GraphBean {
+
+    private String date;
+    private int nowConfirm;
+}
+```
+
+
+
 4）返回给页面渲染
+
+控制类
+
+```java
+ @GetMapping("/graph")
+    public String graph(Model model){
+        List<GraphBean> list = GraphHandler.getGraphData();
+        // 进一步改造数据格式
+        // 因为前端需要的数据是 x轴所有数据的数据和y轴所有数据的数组
+        ArrayList<String> dateList = new ArrayList<>(121);
+        ArrayList<Integer> nowConfirmList = new ArrayList<>(121);
+        for (int i = 0; i < list.size(); i++) {
+            GraphBean graphBean = list.get(i);
+            dateList.add(graphBean.getDate());
+            nowConfirmList.add(graphBean.getNowConfirm());
+        }
+        model.addAttribute("dateList", new Gson().toJson(dateList));
+        model.addAttribute("nowConfirmList", new Gson().toJson(nowConfirmList));
+        return "graph";
+    }
+```
+
+HTML
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/echarts/echarts.min.js}"></script>
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var dateStr = [[${dateList}]];
+    var nowConfirmStr = [[${nowConfirmList}]];
+    // 指定图表的配置项和数据
+    var option = {
+        title: { // 标题组件
+            text: '全国现有确诊趋势'
+        },
+        tooltip: { // 提示框组件
+            trigger: 'axis'
+        },
+        legend: { // 曲线含义说明
+            data: ['现有确诊']
+        },
+        xAxis: { // 转化为json对象
+            data: JSON.parse(dateStr)
+            // data: dateStr
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            name: '现有确诊',
+            data: JSON.parse(nowConfirmStr),
+            // data: nowConfirmStr,
+            type: 'line'
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</html>
+```
+
+Echarts教程地址：[教程地址](https://echarts.apache.org/zh/tutorial.html#5%20%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8B%20ECharts)
+
+准备dom-> 通过js渲染数据->使用[[$变量]]接收服务端数据–>使用JSON.parse(变量),解析json字符串，获得渲染结果。
+
+#### （二）折线图2
+
+![1589617692527](images/多条折线图.png)
+
+相关逻辑在GraphAddBean对应的代码中
+
+#### （三）柱状图
+
+![1589617915506](images/柱状图.png)
+
+先分析数据的来源->  经过对数据的处理和计算–发送给前端组件进行渲染
+
+相关逻辑在GraphColumnarBean对应的代码中
+
+#### （四）饼状图
+
+![1589622423082](images/饼状图.png)
+
+相关逻辑在GraphPieBean对应的代码中

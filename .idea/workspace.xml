@@ -2,20 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="104e8d31-2964-46c9-8a04-683fc6c4d1aa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphBean.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/zdefys/handler/GraphHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/zdefys/util/HttpClientUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/echarts/echarts.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/graph.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tmp11.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/graph.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphAddBean.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphColumnarBean.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphPieBean.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/graphAdd.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/graphColumnar.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/graphPie.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SpringBoot项目.md" beforeDir="false" afterPath="$PROJECT_DIR$/SpringBoot项目.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot-practise.iml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot-practise.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/zdefys/controller/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zdefys/controller/DataController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/zdefys/handler/DataHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zdefys/handler/DataHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zdefys/mapper/DataMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zdefys/mapper/DataMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/zdefys/handler/GraphHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zdefys/handler/GraphHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/zdefys/handler/DataHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/zdefys/handler/DataHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp11.txt" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,21 +33,53 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tmp11.txt">
+        <entry file="file://$PROJECT_DIR$/data.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="12" column="25" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="25" />
+            <state relative-caret-position="120">
+              <caret line="34" selection-start-line="34" selection-end-line="34" />
+              <folding>
+                <element signature="n#!!block;n#chinaTotal#0;n#!!top" />
+                <element signature="n#!!block;n#chinaAdd#0;n#!!top" />
+                <element signature="n#!!block;n#showAddSwitch#0;n#!!top" />
+                <element signature="e#659#261161#0" />
+                <element signature="e#702#759#0" />
+                <element signature="e#776#1014#0" />
+                <element signature="e#1044#2082#0" />
+                <element signature="e#2592#8421#0" />
+                <element signature="e#2606#3120#0" />
+                <element signature="e#8925#9473#0" />
+                <element signature="e#9493#20072#0" />
+                <element signature="e#20082#26967#0" />
+                <element signature="e#26977#37068#0" />
+                <element signature="e#37078#46634#0" />
+                <element signature="e#46644#54573#0" />
+                <element signature="e#54583#63038#0" />
+                <element signature="e#63048#64080#0" />
+                <element signature="e#64090#76268#0" />
+                <element signature="e#76278#85276#0" />
+                <element signature="e#85286#92163#0" />
+                <element signature="e#92173#101167#0" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/util/HttpClientUtil.java">
+        <entry file="file://$PROJECT_DIR$/graph.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="57" selection-start-line="57" selection-end-line="57" />
+            <state relative-caret-position="240">
+              <caret line="8051" column="13" selection-start-line="8051" selection-start-column="5" selection-end-line="8051" selection-end-column="13" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#20#33742#0" />
+                <element signature="e#33765#58471#0" />
+                <element signature="e#33771#33970#0" />
+                <element signature="e#58497#69924#0" />
+                <element signature="e#58503#58593#0" />
+                <element signature="e#69944#127017#0" />
+                <element signature="e#127037#147396#0" />
+                <element signature="e#147415#154246#0" />
+                <element signature="n#!!block;n#provinceCompare#0;n#!!top" />
+                <element signature="n#!!block;n#cityStatis#0;n#!!top" />
               </folding>
             </state>
           </provider>
@@ -53,8 +88,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/handler/GraphHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="404">
-              <caret line="46" selection-start-line="46" selection-end-line="46" />
+            <state relative-caret-position="334">
+              <caret line="149" column="27" selection-start-line="149" selection-start-column="23" selection-end-line="149" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -65,53 +100,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/controller/DataController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="54" column="59" selection-start-line="54" selection-start-column="59" selection-end-line="54" selection-end-column="59" />
+            <state relative-caret-position="226">
+              <caret line="95" column="28" lean-forward="true" selection-start-line="95" selection-start-column="28" selection-end-line="95" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/list.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="2" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/SpringBootPractiseApplication.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="10" selection-start-line="10" selection-end-line="10" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/graph.html">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/templates/graphPie.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="8" column="23" lean-forward="true" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphBean.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="266">
+              <caret line="23" column="10" lean-forward="true" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -122,8 +124,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="HTML File" />
+        <option value="package.json" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -131,10 +134,17 @@
     <findStrings>
       <find>黑龙</find>
       <find>getArea</find>
+      <find>\&quot;</find>
     </findStrings>
+    <replaceStrings>
+      <replace>&quot;</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/zdefys/handler/GraphHandler.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -147,18 +157,27 @@
         <option value="$PROJECT_DIR$/src/main/java/com/zdefys/service/DataService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/zdefys/bean/DataBean.java" />
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/src/main/resources/templates/list.html" />
         <option value="$PROJECT_DIR$/src/main/java/com/zdefys/service/impl/DataServiceImpl.java" />
         <option value="$PROJECT_DIR$/SpringBoot项目.md" />
         <option value="$PROJECT_DIR$/src/main/java/com/zdefys/mapper/DataMapper.java" />
         <option value="$PROJECT_DIR$/tmp11.txt" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/zdefys/handler/DataHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/zdefys/util/HttpClientUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphBean.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/zdefys/handler/GraphHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/zdefys/controller/DataController.java" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/graph.html" />
+        <option value="$PROJECT_DIR$/src/main/resources/templates/list.html" />
+        <option value="$PROJECT_DIR$/graph.json" />
+        <option value="$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphAddBean.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/templates/graphAdd.html" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/data.json" />
+        <option value="$PROJECT_DIR$/src/main/java/com/zdefys/handler/DataHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphColumnarBean.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/templates/graphColumnar.html" />
+        <option value="$PROJECT_DIR$/src/main/java/com/zdefys/handler/GraphHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphPieBean.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/zdefys/controller/DataController.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/templates/graphPie.html" />
       </list>
     </option>
   </component>
@@ -195,10 +214,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="918" />
-    <option name="y" value="93" />
-    <option name="width" value="950" />
-    <option name="height" value="800" />
+    <option name="x" value="750" />
+    <option name="y" value="65" />
+    <option name="width" value="1185" />
+    <option name="height" value="745" />
   </component>
   <component name="ProjectId" id="1beEfbihRmw5zMSa4nKZuK0dKFj" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -209,8 +228,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -301,21 +318,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="echarts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springboot-practise" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springboot-practise" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -334,7 +344,8 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/static/echarts" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/templates" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -342,6 +353,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\学习\Java\渡一\springboot-practise\src\main\resources\templates" />
       <recent name="E:\学习\Java\渡一\springboot-practise\src\main\resources\static\echarts" />
       <recent name="E:\学习\Java\渡一\springboot-practise\src\main\resources\static" />
       <recent name="F:\zhangdeen\代码\SpringBoot-" />
@@ -468,7 +480,11 @@
       <workItem from="1589277880121" duration="2598000" />
       <workItem from="1589281121325" duration="4957000" />
       <workItem from="1589347009162" duration="7568000" />
-      <workItem from="1589367610580" duration="6329000" />
+      <workItem from="1589367610580" duration="7775000" />
+      <workItem from="1589381427816" duration="19000" />
+      <workItem from="1589536924990" duration="99000" />
+      <workItem from="1589537038271" duration="5899000" />
+      <workItem from="1589602873708" duration="8984000" />
     </task>
     <task id="LOCAL-00001" summary="第三天提交">
       <created>1589206197457</created>
@@ -512,17 +528,24 @@
       <option name="project" value="LOCAL" />
       <updated>1589354863101</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="第五天提交----实现折线图">
+      <created>1589379327719</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1589379327719</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28171000" />
+    <option name="totallyTimeSpent" value="44618000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="735" y="75" width="760" height="640" extended-state="0" />
+    <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.25641027" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16152816" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -530,13 +553,13 @@
       <window_info id="Web" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.22637795" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.48031497" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.29469272" />
+      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.19553073" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Spring" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.10826772" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.34341252" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.12401575" />
@@ -546,7 +569,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Maven" order="3" weight="0.3297587" />
+      <window_info anchor="right" id="Maven" order="3" weight="0.25842696" />
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="right" id="Word Book" order="5" side_tool="true" />
       <window_info anchor="right" id="Database" order="6" />
@@ -560,7 +583,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="第三天提交" />
     <MESSAGE value="第四天提交----解析html以及配置数据库" />
-    <option name="LAST_COMMIT_MESSAGE" value="第四天提交----解析html以及配置数据库" />
+    <MESSAGE value="第五天提交----实现折线图" />
+    <option name="LAST_COMMIT_MESSAGE" value="第五天提交----实现折线图" />
   </component>
   <component name="WindowStateProjectService">
     <state width="936" height="255" key="GridCell.Tab.0.bottom" timestamp="1588999882036">
@@ -601,9 +625,6 @@
     <state width="502" height="414" key="XDebugger.FullValuePopup/0.0.1920.1050@0.0.1920.1050" timestamp="1588986900465" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tmp1.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/tmp.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="20">
@@ -716,13 +737,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/bean/DataBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="46" selection-start-line="15" selection-end-line="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
@@ -740,26 +754,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/util/HttpClientUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://D:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/ArrayList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -770,13 +764,57 @@
     <entry file="file://$PROJECT_DIR$/src/main/resources/static/echarts/echarts.min.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/controller/DataController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="54" column="59" selection-start-line="54" selection-start-column="59" selection-end-line="54" selection-end-column="59" />
+        <state relative-caret-position="34">
+          <caret line="12" selection-start-line="12" selection-end-line="19" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/graph.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="74">
+          <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tmp1.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tmp11.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="26" column="24" lean-forward="true" selection-end-line="7842" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/util/HttpClientUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="59" selection-start-line="16" selection-end-line="59" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/graphAdd.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="42" column="24" lean-forward="true" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -787,47 +825,149 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/handler/GraphHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphAddBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="404">
-          <caret line="46" selection-start-line="46" selection-end-line="46" />
+        <state relative-caret-position="160">
+          <caret line="12" selection-start-line="12" selection-end-line="14" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphColumnarBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#440#441#0" expanded="true" />
+            <element signature="e#465#466#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Program Files/Java/jdk1.8.0_201/jre/lib/rt.jar!/sun/reflect/NativeMethodAccessorImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="26" selection-start-line="26" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.2.6.RELEASE/spring-web-5.2.6.RELEASE.jar!/org/springframework/web/method/support/InvocableHandlerMethod.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="98">
+          <caret line="58" column="35" lean-forward="true" selection-start-line="58" selection-start-column="35" selection-end-line="58" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+          <folding>
+            <element signature="n#!!block;n#chinaTotal#0;n#!!top" />
+            <element signature="n#!!block;n#chinaAdd#0;n#!!top" />
+            <element signature="n#!!block;n#showAddSwitch#0;n#!!top" />
+            <element signature="e#659#261161#0" />
+            <element signature="e#702#759#0" />
+            <element signature="e#776#1014#0" />
+            <element signature="e#1044#2082#0" />
+            <element signature="e#2592#8421#0" />
+            <element signature="e#2606#3120#0" />
+            <element signature="e#8925#9473#0" />
+            <element signature="e#9493#20072#0" />
+            <element signature="e#20082#26967#0" />
+            <element signature="e#26977#37068#0" />
+            <element signature="e#37078#46634#0" />
+            <element signature="e#46644#54573#0" />
+            <element signature="e#54583#63038#0" />
+            <element signature="e#63048#64080#0" />
+            <element signature="e#64090#76268#0" />
+            <element signature="e#76278#85276#0" />
+            <element signature="e#85286#92163#0" />
+            <element signature="e#92173#101167#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/handler/DataHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+        <state relative-caret-position="142">
+          <caret line="44" column="19" lean-forward="true" selection-start-line="44" selection-start-column="19" selection-end-line="44" selection-end-column="19" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tmp11.txt">
+    <entry file="file://$PROJECT_DIR$/graph.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="12" column="25" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="2" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/graph.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="23" lean-forward="true" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+        <state relative-caret-position="240">
+          <caret line="8051" column="13" selection-start-line="8051" selection-start-column="5" selection-end-line="8051" selection-end-column="13" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="e#20#33742#0" />
+            <element signature="e#33765#58471#0" />
+            <element signature="e#33771#33970#0" />
+            <element signature="e#58497#69924#0" />
+            <element signature="e#58503#58593#0" />
+            <element signature="e#69944#127017#0" />
+            <element signature="e#127037#147396#0" />
+            <element signature="e#147415#154246#0" />
+            <element signature="n#!!block;n#provinceCompare#0;n#!!top" />
+            <element signature="n#!!block;n#cityStatis#0;n#!!top" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/bean/DataBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="15" selection-start-line="15" selection-end-line="17" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/bean/GraphPieBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/handler/GraphHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="149" column="27" selection-start-line="149" selection-start-column="23" selection-end-line="149" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/zdefys/controller/DataController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="95" column="28" lean-forward="true" selection-start-line="95" selection-start-column="28" selection-end-line="95" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/graphColumnar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="620">
+          <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/graphPie.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="23" column="10" lean-forward="true" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
         </state>
       </provider>
     </entry>
