@@ -23,17 +23,22 @@ public class GraphHandler {
 
     public static String urlStr = "https://view.inews.qq.com/g2/getOnsInfo?name=disease_other";
 
+    public static String getData() {
+        return HttpClientUtil.doGet(urlStr);
+    }
+
+    public static List<GraphBean> getGraphData() {
+        return getGraphData(getData());
+    }
 
     /**
      * 一条折线图
      *
      * @return
      */
-    public static List<GraphBean> getGraphData() {
+    public static List<GraphBean> getGraphData(String str) {
 
         List<GraphBean> result = new ArrayList<>(121);
-
-        String str = HttpClientUtil.doGet(urlStr);
         Gson gson = new Gson();
         Map map = gson.fromJson(str, Map.class);
         String subStr = (String) map.get("data");
@@ -50,15 +55,18 @@ public class GraphHandler {
         return result;
     }
 
+    public static List<GraphAddBean> getGraphAddData() {
+        return getGraphAddData(getData());
+    }
+
     /**
      * 两条折线图
      *
      * @return
      */
-    public static List<GraphAddBean> getGraphAddData() {
+    public static List<GraphAddBean> getGraphAddData(String str) {
         List<GraphAddBean> result = new ArrayList<>(121);
 
-        String str = HttpClientUtil.doGet(urlStr);
         Gson gson = new Gson();
         Map map = gson.fromJson(str, Map.class);
         String subStr = (String) map.get("data");
@@ -114,15 +122,18 @@ public class GraphHandler {
         return result;
     }
 
+    public static List<GraphPieBean> getGraphPieData() {
+        return getGraphPieData(getData());
+    }
+
     /**
      * 饼状图
      *
      * @return
      */
-    public static List<GraphPieBean> getGraphPieData() {
+    public static List<GraphPieBean> getGraphPieData(String str) {
         List<GraphPieBean> result = new ArrayList<>(3);
 
-        String str = HttpClientUtil.doGet(urlStr);
         Gson gson = new Gson();
         Map map = gson.fromJson(str, Map.class);
         String subStr = (String) map.get("data");
@@ -145,7 +156,7 @@ public class GraphHandler {
             }
             double value = (double) dataMap.get(o);
             name += ":" + (int) value + "例";
-            total+= value;
+            total += value;
             GraphPieBean bean = new GraphPieBean(name, (int) value);
             result.add(bean);
         }

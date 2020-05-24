@@ -7,6 +7,8 @@
 
 柱状图访问地址：<http://localhost:8080/graphColumnar>
 
+地图访问地址：<http://localhost:8080/map>
+
 ## Day1
 
 ### 【课程目标】
@@ -908,11 +910,129 @@ Echarts教程地址：[教程地址](https://echarts.apache.org/zh/tutorial.html
 
 准备dom-> 通过js渲染数据->使用[[$变量]]接收服务端数据–>使用JSON.parse(变量),解析json字符串，获得渲染结果。
 
+## Day6
+
 #### （二）折线图2
 
 ![1589617692527](images/多条折线图.png)
 
 相关逻辑在GraphAddBean对应的代码中
+
+处理数据-> 转化格式->返回数据给Echarts渲染
+
+GraphHandler   DataController  *.html
+
+```java
+/**
+     * 两条折线图
+     *
+     * @return
+     */
+    public static List<GraphAddBean> getGraphAddData() {
+        List<GraphAddBean> result = new ArrayList<>(121);
+
+        String str = HttpClientUtil.doGet(urlStr);
+        Gson gson = new Gson();
+        Map map = gson.fromJson(str, Map.class);
+        String subStr = (String) map.get("data");
+        Map subMap = gson.fromJson(subStr, Map.class);
+
+        ArrayList list = (ArrayList) subMap.get("chinaDayAddList");
+        for (int i = 0; i < list.size(); i++) {
+            Map tmp = (Map) list.get(i);
+            String date = (String) tmp.get("date");
+            double addConfirm = (double) tmp.get("confirm");
+            double addSuspect = (double) tmp.get("suspect");
+            GraphAddBean graphAddBean = new GraphAddBean(date, (int) addConfirm, (int) addSuspect);
+            result.add(graphAddBean);
+        }
+        return result;
+
+    }
+```
+
+
+
+```java
+@GetMapping("/graphAdd")
+    public String graphAdd(Model model){
+        List<GraphAddBean> list = GraphHandler.getGraphAddData();
+        // 进一步改造数据格式
+        // 因为前端需要的数据是 x轴所有数据的数据和y轴所有数据的数组
+        ArrayList<String> dateList = new ArrayList<>(121);
+        ArrayList<Integer> addConfirmList = new ArrayList<>(121);
+        ArrayList<Integer> addSuspectList = new ArrayList<>(121);
+        for (int i = 0; i < list.size(); i++) {
+            GraphAddBean graphAddBean = list.get(i);
+            dateList.add(graphAddBean.getDate());
+            addConfirmList.add(graphAddBean.getAddConfirm());
+            addSuspectList.add(graphAddBean.getAddSuspect());
+        }
+        model.addAttribute("dateList", new Gson().toJson(dateList));
+        model.addAttribute("addConfirmList", new Gson().toJson(addConfirmList));
+        model.addAttribute("addSuspectList", new Gson().toJson(addSuspectList));
+        return "graphAdd";
+    }
+```
+
+3）HTML
+
+增加折线时，主要在legend和series中增加对应元素
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ZDEFYS出品：疫情最新动态</title>
+    <script type="text/javascript" th:src="@{/echarts/echarts.min.js}"></script>
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var dateStr = [[${dateList}]];
+    var addConfirmList = [[${addConfirmList}]];
+    var addSuspectList = [[${addSuspectList}]];
+    // 指定图表的配置项和数据
+    var option = {
+        title: { // 标题组件
+            text: '全国疫情新增趋势'
+        },
+        tooltip: { // 提示框组件
+            trigger: 'axis'
+        },
+        legend: { // 曲线含义说明
+            data: ['新增确诊','新增疑似']
+        },
+        xAxis: { // 转化为json对象
+            data: JSON.parse(dateStr)
+            // data: dateStr
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            name: '新增确诊',
+            data: JSON.parse(addConfirmList),
+            type: 'line'
+        },{
+            name: '新增疑似',
+            data: JSON.parse(addSuspectList),
+            type: 'line'
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</html>
+```
+
+
 
 #### （三）柱状图
 
@@ -922,8 +1042,302 @@ Echarts教程地址：[教程地址](https://echarts.apache.org/zh/tutorial.html
 
 相关逻辑在GraphColumnarBean对应的代码中
 
+1）GraphHandler
+
+```java
+/**
+     * 柱状图
+     *
+     * @return
+     */
+    public static List<GraphColumnarBean> getGraphColumnarData() {
+        List<GraphColumnarBean> result = new ArrayList<>(26);
+        String respJson = HttpClientUtil.doGet(urlStrAll);
+        Gson gson = new Gson();
+        Map map = gson.fromJson(respJson, Map.class);
+        String subStr = (String) map.get("data");
+        Map subMap = gson.fromJson(subStr, Map.class);
+        ArrayList areaList = (ArrayList) subMap.get("areaTree");
+        Map dataMap = (Map) areaList.get(0);
+        ArrayList childrenList = (ArrayList) dataMap.get("children");
+
+        for (int i = 0; i < childrenList.size(); i++) {
+            Map tmp = (Map) childrenList.get(i);
+            String name = (String) tmp.get("name");
+            ArrayList children = (ArrayList) tmp.get("children");
+            for (int j = 0; j < children.size(); j++) {
+                Map subTmp = (Map) children.get(j);
+                if ("境外输入".equals((String) subTmp.get("name"))) {
+                    Map total = (Map) subTmp.get("total");
+                    // 境外输入的数据
+                    double fromAbroad = (double) total.get("confirm");
+
+                    GraphColumnarBean bean = new GraphColumnarBean(name, (int) fromAbroad);
+                    result.add(bean);
+                }
+            }
+        }
+        return result;
+    }
+```
+
+2）DataController
+
+```java
+@GetMapping("/graphColumnar")
+    public String graphColumnar(Model model) {
+        List<GraphColumnarBean> list = GraphHandler.getGraphColumnarData();
+        Collections.sort(list);
+        ArrayList<String> nameList = new ArrayList<>(10);
+        ArrayList<Integer> fromAbroadList = new ArrayList<>(10);
+        for (int i = 0; i < 10; i++) {
+            GraphColumnarBean bean = list.get(i);
+            nameList.add(bean.getArea());
+            fromAbroadList.add(bean.getFromAbroad());
+        }
+        model.addAttribute("nameList", new Gson().toJson(nameList));
+        model.addAttribute("fromAbroadList", new Gson().toJson(fromAbroadList));
+        return "graphColumnar";
+    }
+```
+
+3） HTML
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ZDEFYS出品：疫情最新动态</title>
+    <script type="text/javascript" th:src="@{/echarts/echarts.min.js}"></script>
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var nameStr = [[${nameList}]];
+    var fromAbroadStr = [[${fromAbroadList}]];
+    // 指定图表的配置项和数据
+    var option = {
+        title: { // 标题组件
+            text: '境外输入省市TOP10'
+        },
+        tooltip: { // 提示框组件
+            trigger: 'axis'
+        },
+        xAxis: { // 转化为json对象
+            data: JSON.parse(nameStr)
+            // data: dateStr
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            name: '境外输入',
+            data: JSON.parse(fromAbroadStr),
+            type: 'bar',
+            barWidth: '60%',
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</html>
+```
+
+
+
 #### （四）饼状图
 
 ![1589622423082](images/饼状图.png)
 
 相关逻辑在GraphPieBean对应的代码中
+
+GraphPie.html
+
+```
+// 指定图表的配置项和数据
+    var option = {
+        title: { // 标题组件
+            text: '全国现有确诊构成：' + total + '例'
+        },
+        tooltip: { // 提示框组件
+            trigger: 'axis'
+        },
+        series: [
+            {
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: JSON.parse(str)
+            }
+        ]
+    };
+```
+
+
+
+## Day7
+
+#### （五）中国地图
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ZDEFYS出品：疫情最新动态</title>
+    <script type="text/javascript" th:src="@{/echarts/echarts.min.js}"></script>
+    <script type="text/javascript" th:src="@{/echarts/china.js}"></script>
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var mapDataStr = [[${mapData}]];
+    // 指定图表的配置项和数据
+    var option = {
+        title: { // 标题组件
+            text: '疫情地图',
+            subtext: '仅供参考',
+            x: 'center'
+        },
+        tooltip: { // 提示框组件
+            trigger: 'item'
+        },
+        series: [
+            {
+                name: '现存确诊',
+                type: 'map',
+                mapType: 'china',
+                roam: false,
+                label: {
+                    normal: {
+                        position: 'center',
+                        show: true,
+                        textStyle: {
+                            color: 'rgba(0,0,0,0,4)'
+                        }
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                data: JSON.parse(mapDataStr)
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</html>
+```
+
+#### 【国际化】
+
+##### （一）使用浏览器识别语种
+
+是对thymeleaf中消息表达式的一种应用，#{}，提供的是对配置文件中信息的读取。
+
+1）在resources目录下，创建i18n文件夹。
+
+设置其中的key和value（注意：此时的编码格式需要在idea的设置中确认）
+
+```properties
+list.title=ZDEFYS出品：疫情最新动态 -D
+list.h2=国内疫情情况如下 -D
+list.table.name1=地区 -D
+list.table.name2=现有确诊 -D
+list.table.name3=累计确诊 -D
+list.table.name4=治愈 -D
+list.table.name5=死亡 -D
+```
+
+2）创建其他语种对应的配置文件，如*en_US.properties和*zh_CN.properteis
+
+```properties
+list.title=Illness New Dynamic State From ZDEFYS
+list.h2=As Follows
+list.table.name1=Area
+list.table.name2=NowConfirm
+list.table.name3=Confirm
+list.table.name4=Heal
+list.table.name5=Dead
+```
+
+3）在html中更改对key值的引用方式，使用消息表达式
+
+```html
+<title th:text="#{list.title}">ZDEFYS出品：疫情最新动态</title>
+<h2 th:text="#{list.h2}">国内疫情情况如下</h2>
+```
+
+4）让spring找到国际化文件对应的位置，在application.properties中配置
+
+```proper
+spring.messages.basename=i18n.list
+```
+
+5）验证方式
+
+通过更改浏览器中【设置】 - 【高级】 - 【语言】 - 找到【英语（美国）】，可以切换中英文显示
+
+##### （二）自定义切换语种
+
+使用spring提供的国际化使用类LocalResolver
+
+1）页面中增加按钮
+
+```html
+ <label>
+        <a class="btn btn-sm" th:href="@{/(lan='zh_CN')}">中文</a>
+        <a class="btn btn-sm" th:href="@{/(lan='en_US')}">英文</a>
+    </label>
+```
+
+2）自定义LocaleResolver的实现类
+
+```java
+public class MyLocaleResolver implements LocaleResolver {
+
+    @Override
+    public Locale resolveLocale(HttpServletRequest httpServletRequest) {
+        String lan = httpServletRequest.getParameter("lan");
+        Locale locale = Locale.getDefault();
+        if (!StringUtils.isEmpty(lan)) {
+            String[] split = lan.split("_");
+            locale = new Locale(split[0], split[1]);
+        }
+        return locale;
+    }
+
+    @Override
+    public void setLocale(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Locale locale) {
+
+    }
+}
+```
+
+3）注入到Spring中
+
+```java
+@Configuration
+public class MyConfig {
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        return new MyLocaleResolver();
+    }
+}
+```
+
+4）验证 此时切换按钮时，可以看到不同语种的显示
+

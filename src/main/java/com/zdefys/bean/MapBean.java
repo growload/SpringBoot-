@@ -6,20 +6,14 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author: zdefys
- * @date: 2020/5/16 18:02
+ * @date: 2020/5/24 14:50
  * @version: v1.0
  * @description:
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class GraphPieBean implements Comparable<GraphPieBean>{
+@AllArgsConstructor
+public class MapBean {
     private String name;
     private int value;
-
-
-    @Override
-    public int compareTo(GraphPieBean o) {
-        return this.getValue() - o.getValue();
-    }
 }
