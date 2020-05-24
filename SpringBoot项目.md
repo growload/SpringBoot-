@@ -1,3 +1,7 @@
+---
+typora-root-url: images
+---
+
 # SpringBoot项目
 数据项目访问地址：http://118.190.27.19:8080/
 
@@ -1340,4 +1344,173 @@ public class MyConfig {
 ```
 
 4）验证 此时切换按钮时，可以看到不同语种的显示
+
+## Day8
+
+#### （一）邮件
+
+邮件发送的流程
+
+![邮件](/邮件.png)
+
+引入maven依赖
+
+```xml-dtd
+<!-- 邮件 -->
+<dependency>
+    <groupId>javax.mail</groupId>
+    <artifactId>mail</artifactId>
+    <version>1.4.7</version>
+</dependency>
+```
+
+【协议】
+
+SMTP = Simple Mail Transfer Protocol  简单邮件传输协议
+
+在邮件发送时，主要会使用到的协议，服务器地址形如：smtp.***.com
+
+
+
+如果从qq邮箱发送邮件到126邮箱
+
+使用前提，确认qq邮箱中【设置】 - 【账户】 - 【SMTP】处于开启状态 - 【获取授权码】
+
+原生Java发送邮件
+
+```java
+public class MailUtil {
+
+    /**
+     * 从qq邮箱 发送邮件  到126邮箱
+     * ribogqlfpcgxbeaa
+     */
+    public static void send() throws Exception {
+        // 1) 通过配置构成邮件的会话
+        Properties prop = new Properties();
+        // 设置传输协议
+        prop.setProperty("mail.transport.protocol", "smtp");
+        // smtp服务器地址
+        prop.setProperty("mail.smtp.host", "smtp.qq.com");
+        prop.setProperty("mail.smtp.auth", "true");
+        // 配置SSL相关的信息
+        String port = "465";
+        prop.setProperty("mail.smtp.port", port);
+        prop.setProperty("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        prop.setProperty("mail.smtp.socketFactory.fallback", "false");
+        prop.setProperty("mail.smtp.socketFactory.port", port);
+        // 2) 创建会话
+        Session session = Session.getInstance(prop);
+        // 3) 创建一封邮件
+        MimeMessage message = new MimeMessage(session);
+        String sendMail = "571597969@qq.com";
+        String recipients = "deenzhang187@126.com";
+        message.setFrom(new InternetAddress(sendMail,"德恩","UTF-8"));
+        // MimeMessage.RecipientType.CC 抄送 MimeMessage.RecipientType.BCC 密送
+        message.setRecipient(MimeMessage.RecipientType.TO,
+                new InternetAddress(recipients,"德恩","UTF-8"));
+        // 标题
+        message.setSubject("来自ZDEFYS的问候","UTF-8");
+        // 正文
+        message.setContent("不要喜欢我","text/html;charset=UTF-8");
+        // 发送时间
+        message.setSentDate(new Date());
+        // 可以保存为 *.eml的文件格式
+        message.saveChanges();
+
+        // 4） 获取邮件传输对象 建立连接并发送
+        Transport transport = session.getTransport();
+        // 设置账户和密码
+        String account = "571597969@qq.com";
+        String password = "ribogqlfpcgxbeaa";
+        transport.connect(account,password);
+        transport.sendMessage(message,message.getAllRecipients());
+        // 关闭连接
+        transport.close();
+    }
+}
+```
+
+Spring整合邮件
+
+引入依赖
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-mail</artifactId>
+</dependency>
+```
+
+配置文件添加配置信息
+
+```properties
+spring.mail.username=571597969@qq.com
+spring.mail.password=ribogqlfpcgxbeaa
+spring.mail.host=smtp.qq.com
+spring.mail.properties.mail.smtp.ssl.enable=true
+```
+
+```java
+@Component
+public class MailHandler {
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    public void send(){
+        System.out.println("执行邮件发送逻辑");
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+
+        mailMessage.setSubject("来自德恩的问候");
+        mailMessage.setText("不要爱上我");
+        mailMessage.setTo("deenzhang187@126.com");
+        mailMessage.setFrom("571597969@qq.com");
+
+        mailSender.send(mailMessage);
+    }
+
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    // 结合模板使用
+    public void sendByTemplate() throws Exception{
+        System.out.println("执行邮件发送逻辑-----  sendByTemplate");
+        MimeMessage mailMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mailMessage,true);
+        helper.setSubject("来自笔记的问候");
+
+        Context context = new Context();
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("content", "我要爱上你");
+        context.setVariables(map);
+
+        String result = this.templateEngine.process("mail", context);
+        // 设置文本 且html标志为true
+        helper.setText(result,true);
+        helper.setTo("deenzhang187@126.com");
+        helper.setFrom("571597969@qq.com");
+        // 添加附件
+        String filePath = "SpringBoot项目.md";
+        FileSystemResource fileSystemResource = new FileSystemResource(new File(filePath));
+        helper.addAttachment("笔记",fileSystemResource);
+        mailSender.send(mailMessage);
+    }
+}
+
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<p th:text="${content}">content</p>
+</body>
+</html>
+```
 

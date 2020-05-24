@@ -41,11 +41,10 @@ public class DataHandler {
     // 配置定时执行的注解 支持cron表达式
     @Scheduled(cron = "0 0 0 1-2 * ?")
     public void updateData(){
-        System.out.println("更新数据");
         saveData();
     }
 
-    public static List<DataBean> getData() throws Exception {
+    public static List<DataBean> getData(){
         // 实时数据
         String respJson = HttpURLConnectionUtil.doGet(urlStr);
         Gson gson = new Gson();
