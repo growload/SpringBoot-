@@ -1347,6 +1347,8 @@ public class MyConfig {
 
 ## Day8
 
+### 【订阅数据】
+
 #### （一）邮件
 
 邮件发送的流程
@@ -1512,5 +1514,265 @@ public class MailHandler {
 <p th:text="${content}">content</p>
 </body>
 </html>
+```
+
+## Day9
+
+#### （二）异步任务
+
+如果部署多台服务器，如何保障邮件只发送一次？
+
+消息中间件，可以做到发送一条消息让所有服务器都接收，也可以做到发送一条消息让某一个服务器接收。（重要特性）。
+
+为了满足消息中间件的等待时间，需要先返回消息处理的结果，再进行具体的逻辑，此时使用异步任务。
+
+
+
+使用方式：
+
+1）先在主程序入口类上，打开相应的开关@EnableAsync
+
+2） 在需要异步执行的方法上添加注解@Async
+
+### 【常用功能】
+
+#### （一）登录
+
+1）控制类
+
+```java
+@Controller
+public class LoginController {
+
+    @GetMapping("/")
+    public String login() {
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam("username") String username,
+                        @RequestParam("password") String password,
+                        Map<String,Object> map, HttpSession session) {
+        // 只要用户名不为空，且密码符合要求
+        if (!StringUtils.isEmpty(username) && "123456".equals(password)) {
+            // 用session存储登录状态
+            session.setAttribute("loginUser",username);
+            // 登录成功跳转首页
+            return "redirect:/list/";
+        }
+        return "login";
+    }
+}
+```
+
+2）HTML
+
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页</title>
+    <link rel="stylesheet" th:href="@{/bootstrap.css}">
+</head>
+<body class="container">
+
+<h2>登录窗口</h2><br>
+
+<form class="form-horizontal" th:action="@{/login}" method="post">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">username:</label>
+        <div class="col-sm-5">
+            <input type="text" id="username" name="username">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">password:</label>
+        <div class="col-sm-5">
+            <input type="password" id="password" name="password">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-sm-5">
+            <input type="submit" value="提交">
+        </div>
+    </div>
+
+</form>
+
+</body>
+</html>
+```
+
+3）添加拦截器
+
+```java
+@Component
+public class MyInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("====MyInterceptor====");
+
+        Object user = request.getSession().getAttribute("loginUser");
+        // 已登录 放行
+        if (user != null) {
+            return true;
+        }
+        request.getRequestDispatcher("/login").forward(request,response);
+        return false;
+    }
+```
+
+将拦截器注册到SpringMvc中
+
+```java
+@Configuration
+public class MyWebMvcConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private MyInterceptor myInterceptor;
+
+    // 注册自定义拦截器，声明相关拦截规则
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(myInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/login","/*.css","/*.js");
+
+    }
+}
+```
+
+#### （二）cookie和session
+
+因为web程序所使用的http协议，是无状态的，所以二者的出现时用来解决会话跟踪问题。
+
+二者区别
+
+1）一个在客户端浏览器中，一个存储在服务器中。
+
+2）cookie不够安全，可以被伪造对服务器进行欺骗
+
+3）当访问量增多时，session的存储可能带来服务器压力，要考虑减轻
+
+4）cookie的使用有大小和长度的限制，如大小是在4K左右。
+
+
+
+分布式session
+
+对应于单体应用（一台服务器），如果使用了分布式部署（多台服务器），如何保障用户登录后，如果分发到其他服务器，仍旧能找到登录信息，或者不会再分发到第二台服务器上。
+
+![cookie和session](/cookie和session.png)
+
+1）情况一
+
+方案:1：session复制
+
+​	任何服务器的session发生变化，就将信息进行序列化，然后广播传输给其他服务器，来保证session同步。
+
+方案2：session缓存（最常用）
+
+​	将session存储到redis等分布式缓存中，统一所有服务器去存储和读取的位置。
+
+2）情况二
+
+方案3：粘性session
+
+​	在nginx中配置，通过对ip地址求hash，使得同一ip地址的请求都分发到固定的服务器
+
+## Day10
+
+#### （三）Spring-Security
+
+解决的问题是，认证和授权，类似的框架有shiro。
+
+认证，是问你是谁？
+
+授权，是告诉你，你可以做哪些事儿。
+
+用户和权限的通用模型：
+
+![通用用户权限模型](/通用用户权限模型.png)
+
+可以对应出五张表，来描述用户及角色，和角色所拥有的权限。
+
+1）引入maven依赖
+
+```xml
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+```
+
+2）创建页面，welcome+level1/1.html等
+
+3）编写控制逻辑
+
+```java
+@Controller
+public class WelcomeController {
+
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "welcome";
+    }
+
+    @GetMapping("/level1/{path}")
+    public String level1(@PathVariable("path") String path) {
+        return "level1/"+path;
+    }
+
+    @GetMapping("/level2/{path}")
+    public String level2(@PathVariable("path") String path) {
+        return "level2/"+path;
+    }
+
+    @GetMapping("/level3/{path}")
+    public String level3(@PathVariable("path") String path) {
+        return "level3/"+path;
+    }
+
+}
+```
+
+4）去掉自己声明 的拦截器以及对login的post请求的处理
+
+5）配置用户、角色及权限的方式
+
+```java
+@EnableWebSecurity
+public class MySecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // 设定角色的权限 (角色和资源)
+        http.authorizeRequests().antMatchers("/").permitAll()
+                .antMatchers("/level1/**").hasRole("VIP1")
+                .antMatchers("/level2/**").hasRole("VIP2")
+                .antMatchers("/level3/**").hasRole("VIP3");
+
+        // 开启自动配置的登录功能
+        http.formLogin().usernameParameter("username").passwordParameter("password")
+                .loginPage("/login");
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // 设定 用户  密码 及 角色的关联关系
+        // security 要求用户登录时，密码必须加密
+        String pwd = new BCryptPasswordEncoder().encode("123456");
+        auth.inMemoryAuthentication().passwordEncoder(new BCryptPasswordEncoder() {
+        })
+                .withUser("root").password(pwd).roles("VIP1", "VIP2", "VIP3")
+                .and()
+                .withUser("guest").password(pwd).roles("VIP1")
+                .and()
+                .withUser("student").password(pwd).roles("VIP1", "VIP2");
+    }
+}
+
 ```
 

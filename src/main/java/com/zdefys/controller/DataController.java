@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,12 +21,13 @@ import java.util.List;
  * @description:
  */
 @Controller
+@RequestMapping("/list")
 public class DataController {
 
     @Autowired
     DataService dataService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String list(Model model){
         List<DataBean> dataList = dataService.list();
         model.addAttribute("dataList", dataList);
@@ -96,13 +97,6 @@ public class DataController {
         model.addAttribute("fromAbroadList", new Gson().toJson(fromAbroadList));
         return "list";
     }
-
-   /* @GetMapping("/list/{id}")
-    public String listById(Model model,@PathVariable String id){
-        List<DataBean> list = dataService.listById(Integer.parseInt(id));
-        model.addAttribute("dataList", list);
-        return "list";
-    }*/
 
     @GetMapping("/graph")
     public String graph(Model model){

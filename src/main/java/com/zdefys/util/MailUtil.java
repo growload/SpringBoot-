@@ -4,7 +4,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -18,7 +17,7 @@ public class MailUtil {
 
     /**
      * 从qq邮箱 发送邮件  到126邮箱
-     * ribogqlfpcgxbeaa
+     *
      */
     public static void send() throws Exception {
         // 1) 通过配置构成邮件的会话
