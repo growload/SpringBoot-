@@ -56,7 +56,7 @@ public class MailUtil {
         Transport transport = session.getTransport();
         // 设置账户和密码
         String account = "571597969@qq.com";
-        String password = "ribogqlfpcgxbeaa";
+        String password = "******";
         transport.connect(account,password);
         transport.sendMessage(message,message.getAllRecipients());
         // 关闭连接
